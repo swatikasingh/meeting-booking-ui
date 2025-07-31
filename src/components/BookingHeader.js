@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { DatePicker, TimePicker, Input, Button, Select } from "antd";
 import moment from "moment";
 
 const BookingHeader = () => {
+  const [selectedBuilding, setSelectedBuilding] = useState("Phoenix");
+  const [selectedFloor, setSelectedFloor] = useState("Floor 3");
+
+  const getFloorOptions = (building) => {
+    if (building === "Phoenix") {
+      return [
+        { value: "All", label: "All" },
+        { value: "Floor 1", label: "Floor 1" },
+        { value: "Floor 2", label: "Floor 2" },
+        { value: "Floor 3", label: "Floor 3" },
+        { value: "Floor 4", label: "Floor 4" },
+        { value: "Floor 5", label: "Floor 5" },
+        { value: "Floor 6", label: "Floor 6" },
+        { value: "Floor 7", label: "Floor 7" },
+      ];
+    } else if (building === "Orion") {
+      return [
+        { value: "All", label: "All" },
+        { value: "Floor 2", label: "Floor 2" },
+      ];
+    }
+    return [];
+  };
+
+  const handleBuildingChange = (value) => {
+    setSelectedBuilding(value);
+    // Reset floor to "All" when building changes
+    setSelectedFloor("All");
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-6">
@@ -18,11 +48,12 @@ const BookingHeader = () => {
       <div className="grid grid-cols-6 gap-4 mb-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Building & Floor</label>
-          <div className="space-y-2">
+          <div className="bg-white border border-gray-300 rounded-lg p-3 space-y-2">
             <Select 
               className="w-full" 
               placeholder="Select Building"
-              defaultValue="Phoenix"
+              value={selectedBuilding}
+              onChange={handleBuildingChange}
             >
               <Select.Option value="Phoenix">Phoenix</Select.Option>
               <Select.Option value="Orion">Orion</Select.Option>
@@ -30,15 +61,14 @@ const BookingHeader = () => {
             <Select 
               className="w-full" 
               placeholder="Select Floor"
-              defaultValue="Floor 3"
+              value={selectedFloor}
+              onChange={setSelectedFloor}
             >
-              <Select.Option value="Floor 1">Floor 1</Select.Option>
-              <Select.Option value="Floor 2">Floor 2</Select.Option>
-              <Select.Option value="Floor 3">Floor 3</Select.Option>
-              <Select.Option value="Floor 4">Floor 4</Select.Option>
-              <Select.Option value="Floor 5">Floor 5</Select.Option>
-              <Select.Option value="Floor 6">Floor 6</Select.Option>
-              <Select.Option value="Floor 7">Floor 7</Select.Option>
+              {getFloorOptions(selectedBuilding).map(floor => (
+                <Select.Option key={floor.value} value={floor.value}>
+                  {floor.label}
+                </Select.Option>
+              ))}
             </Select>
           </div>
         </div>
