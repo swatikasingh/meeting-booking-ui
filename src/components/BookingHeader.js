@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DatePicker, TimePicker, Input, Button, Select } from "antd";
 import moment from "moment";
 
-const BookingHeader = () => {
+const BookingHeader = ({ onShowReservationStatus }) => {
   const [selectedBuilding, setSelectedBuilding] = useState("Phoenix");
   const [selectedFloor, setSelectedFloor] = useState("Floor 3");
 
@@ -36,7 +36,10 @@ const BookingHeader = () => {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900">📅 Book a Meeting Room</h2>
-        <div className="flex items-center space-x-2 text-sm text-gray-600">
+        <div 
+          className="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer hover:text-blue-600 transition-colors"
+          onClick={onShowReservationStatus}
+        >
           <span>My Reservation Status</span>
           <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
             <span className="text-white text-xs">!</span>
