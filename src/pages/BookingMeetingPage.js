@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import BookingHeader from "../components/BookingHeader";
 import ReservationLegend from "../components/ReservationLegend";
 import TimelineGrid from "../components/TimelineGrid";
+import MyReservationStatus from "../components/MyReservationStatus";
 
 const BookingMeetingPage = () => {
+  const [currentView, setCurrentView] = useState('booking'); // 'booking' or 'reservation'
+
+  const handleShowReservationStatus = () => {
+    setCurrentView('reservation');
+  };
+
+  const handleBackToBooking = () => {
+    setCurrentView('booking');
+  };
+
+  if (currentView === 'reservation') {
+    return <MyReservationStatus onBack={handleBackToBooking} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation Bar */}
@@ -40,7 +55,7 @@ const BookingMeetingPage = () => {
 
       {/* Main Content */}
       <div className="p-6">
-        <BookingHeader />
+        <BookingHeader onShowReservationStatus={handleShowReservationStatus} />
         <ReservationLegend />
         <TimelineGrid />
       </div>
