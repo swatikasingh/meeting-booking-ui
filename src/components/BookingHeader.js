@@ -1,21 +1,138 @@
-import React from "react";
-import { DatePicker, TimePicker, Input, Button } from "antd";
-import FilterDropdown from "./FilterDropdown";
+import React, { useState } from "react";
+import { DatePicker, TimePicker, Input, Button, Select } from "antd";
+import moment from "moment";
 
 const BookingHeader = () => {
+  const [selectedBuilding, setSelectedBuilding] = useState("Phoenix");
+  const [selectedFloor, setSelectedFloor] = useState("Floor 3");
+
+  const getFloorOptions = (building) => {
+    if (building === "Phoenix") {
+      return [
+        { value: "All", label: "All" },
+        { value: "Floor 1", label: "Floor 1" },
+        { value: "Floor 2", label: "Floor 2" },
+        { value: "Floor 3", label: "Floor 3" },
+        { value: "Floor 4", label: "Floor 4" },
+        { value: "Floor 5", label: "Floor 5" },
+        { value: "Floor 6", label: "Floor 6" },
+        { value: "Floor 7", label: "Floor 7" },
+      ];
+    } else if (building === "Orion") {
+      return [
+        { value: "All", label: "All" },
+        { value: "Floor 2", label: "Floor 2" },
+      ];
+    }
+    return [];
+  };
+
+  const handleBuildingChange = (value) => {
+    setSelectedBuilding(value);
+    setSelectedFloor("All");
+  };
+
   return (
-    <div className="bg-white p-4 rounded shadow mb-4">
-      <h2 className="text-xl font-semibold mb-4">Book a Meeting Room</h2>
-      <div className="grid grid-cols-6 gap-4">
-        <FilterDropdown label="Building & Floor" options={["Phoenix - Floor 3", "Other"]} />
-        <DatePicker className="w-full" />
-        <TimePicker.RangePicker className="w-full" format="HH:mm" />
-        <FilterDropdown label="Seats" options={["1-2", "3-5", "5-6"]} />
-        <Input placeholder="Conference Room" />
-        <Input placeholder="Supplies" />
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-semibold text-gray-900">📅 Book a Meeting Room</h2>
+        <div className="flex items-center space-x-2 text-sm text-gray-600">
+          <span>My Reservation Status</span>
+          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+            <span className="text-white text-xs">!</span>
+          </div>
+        </div>
       </div>
-      <div className="text-right mt-4">
-        <Button type="primary">Search</Button>
+      
+      <div className="grid grid-cols-6 gap-4 mb-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Building & Floor</label>
+          <div className="bg-gray-50 border border-gray-300 rounded-md p-2 space-y-1.5">
+            <Select 
+              className="w-full" 
+              placeholder="Building"
+              value={selectedBuilding}
+              onChange={handleBuildingChange}
+              size="small"
+            >
+              <Select.Option value="Phoenix">Phoenix</Select.Option>
+              <Select.Option value="Orion">Orion</Select.Option>
+            </Select>
+            <Select 
+              className="w-full" 
+              placeholder="Floor"
+              value={selectedFloor}
+              onChange={setSelectedFloor}
+              size="small"
+            >
+              {getFloorOptions(selectedBuilding).map(floor => (
+                <Select.Option key={floor.value} value={floor.value}>
+                  {floor.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+          <DatePicker 
+            className="w-full" 
+            placeholder="No appointment"
+            defaultValue={moment("2023-05-08")}
+            format="DD MMM YYYY"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Time</label>
+          <TimePicker.RangePicker 
+            className="w-full" 
+            format="HH:mm"
+            defaultValue={[moment("11:00", "HH:mm"), moment("11:30", "HH:mm")]}
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Seats</label>
+          <Select 
+            className="w-full" 
+            placeholder="1-2 people"
+            defaultValue="1-2 people"
+          >
+            <Select.Option value="1-2 people">1-2 people</Select.Option>
+            <Select.Option value="3-5 people">3-5 people</Select.Option>
+            <Select.Option value="5+ people">5+ people</Select.Option>
+          </Select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Conference room</label>
+          <Select 
+            className="w-full" 
+            placeholder="Type here"
+          >
+            <Select.Option value="Meeting Room A">Meeting Room A</Select.Option>
+            <Select.Option value="Meeting Room B">Meeting Room B</Select.Option>
+          </Select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Supplies</label>
+          <Select 
+            className="w-full" 
+            placeholder="Type here"
+          >
+            <Select.Option value="Projector">Projector</Select.Option>
+            <Select.Option value="Whiteboard">Whiteboard</Select.Option>
+          </Select>
+        </div>
+      </div>
+      
+      <div className="flex justify-end">
+        <Button type="primary" className="bg-blue-500 hover:bg-blue-600 border-blue-500 px-8">
+          Search
+        </Button>
       </div>
     </div>
   );

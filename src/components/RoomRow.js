@@ -1,34 +1,55 @@
 import React from "react";
 import moment from "moment";
 
-const RoomRow = ({ room, bookings }) => {
+const RoomRow = ({ room, isLast }) => {
   const startHour = 7;
+  const totalHours = 15;
 
   const getPosition = (timeStr) => {
-    const m = moment(timeStr, "HH:mm");
-    return m.hour() - startHour;
+    const hour = parseInt(timeStr.split(':')[0]);
+    const minute = parseInt(timeStr.split(':')[1]);
+    return ((hour - startHour) + (minute / 60)) / totalHours * 100;
+  };
+
+  const getDuration = (duration) => {
+    return (duration / totalHours) * 100;
   };
 
   return (
-    <div className="grid grid-cols-[200px_repeat(14,1fr)] border-t text-sm items-center h-16">
-      <div className="px-4">{room}</div>
-      {Array.from({ length: 14 }).map((_, i) => (
-        <div key={i} className="border-l h-full"></div>
-      ))}
+    <div className={`relative ${!isLast ? 'border-b border-gray-200' : ''}`}>
+      <div className="grid grid-cols-[200px_repeat(15,1fr)] min-h-[60px] items-center">
+        {/* Room Info */}
+        <div className="p-4 border-r border-gray-200 bg-gray-50">
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-medium text-gray-900">{room.name}</h4>
+              <p className="text-xs text-gray-500">👥 {room.capacity}</p>
+            </div>
+          </div>
+        </div>
 
-      {bookings.map((b, idx) => (
+        {/* Time Slots */}
+        {Array.from({ length: 15 }).map((_, i) => (
+          <div 
+            key={i} 
+            className="border-r border-gray-200 last:border-r-0 h-full min-h-[60px] hover:bg-blue-50 cursor-pointer transition-colors"
+          />
+        ))}
+      </div>
+
+      {/* Booking Blocks */}
+      {room.bookings.map((booking, idx) => (
         <div
           key={idx}
-          className="absolute text-xs px-2 py-1 rounded bg-blue-300 shadow"
+          className="absolute top-1/2 transform -translate-y-1/2 bg-blue-500 text-white rounded px-3 py-2 shadow-sm z-10"
           style={{
-            left: `${getPosition(b.time) * 60 + 200}px`,
-            top: "auto",
-            height: "2.5rem",
-            width: "100px",
+            left: `calc(200px + ${getPosition(booking.time)}%)`,
+            width: `${getDuration(booking.duration)}%`,
+            minWidth: '100px',
           }}
         >
-          {b.time} <br />
-          {b.title}
+          <div className="text-xs font-medium">{booking.time}</div>
+          <div className="text-xs opacity-90">{booking.title}</div>
         </div>
       ))}
     </div>
