@@ -15,34 +15,32 @@ const BookingHeader = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-7 gap-4 mb-4">
+      <div className="grid grid-cols-6 gap-4 mb-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Building</label>
-          <Select 
-            className="w-full" 
-            placeholder="Select Building"
-            defaultValue="Phoenix"
-          >
-            <Select.Option value="Phoenix">Phoenix</Select.Option>
-            <Select.Option value="Orion">Orion</Select.Option>
-          </Select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Floor</label>
-          <Select 
-            className="w-full" 
-            placeholder="Select Floor"
-            defaultValue="Floor 3"
-          >
-            <Select.Option value="Floor 1">Floor 1</Select.Option>
-            <Select.Option value="Floor 2">Floor 2</Select.Option>
-            <Select.Option value="Floor 3">Floor 3</Select.Option>
-            <Select.Option value="Floor 4">Floor 4</Select.Option>
-            <Select.Option value="Floor 5">Floor 5</Select.Option>
-            <Select.Option value="Floor 6">Floor 6</Select.Option>
-            <Select.Option value="Floor 7">Floor 7</Select.Option>
-          </Select>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Building & Floor</label>
+          <div className="space-y-2">
+            <Select 
+              className="w-full" 
+              placeholder="Select Building"
+              defaultValue="Phoenix"
+            >
+              <Select.Option value="Phoenix">Phoenix</Select.Option>
+              <Select.Option value="Orion">Orion</Select.Option>
+            </Select>
+            <Select 
+              className="w-full" 
+              placeholder="Select Floor"
+              defaultValue="Floor 3"
+            >
+              <Select.Option value="Floor 1">Floor 1</Select.Option>
+              <Select.Option value="Floor 2">Floor 2</Select.Option>
+              <Select.Option value="Floor 3">Floor 3</Select.Option>
+              <Select.Option value="Floor 4">Floor 4</Select.Option>
+              <Select.Option value="Floor 5">Floor 5</Select.Option>
+              <Select.Option value="Floor 6">Floor 6</Select.Option>
+              <Select.Option value="Floor 7">Floor 7</Select.Option>
+            </Select>
+          </div>
         </div>
         
         <div>
